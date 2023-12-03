@@ -1,4 +1,5 @@
-import './App.css'
+import './App.css';
+
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 
@@ -9,7 +10,7 @@ function App() {
     <>
       <Signup />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
