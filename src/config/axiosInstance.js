@@ -5,7 +5,7 @@ axios.create() is a method provided by Axios, a popular JavaScript library for m
 HTTP requests. This method is used to create a customized instance of Axios with 
 default configurations for a specific part of your application.
 */
-const axiosInstance = axios.create();   // this will create an axios instance object
+export const axiosInstance = axios.create();   // this will create an axios instance object
 
 // Set the default configurations in axios instance object
 axiosInstance.defaults.baseURL = import.meta.env.VITE_BASE_URL;
@@ -33,9 +33,3 @@ default settings tailored to a specific part of your application, providing a cl
 and more modular approach to managing HTTP requests.
   
 */
-
-
-
-
-
-export default axiosInstance;
