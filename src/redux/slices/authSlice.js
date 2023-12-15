@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import toast from 'react-hot-toast';
 
 import { axiosInstance } from '../../config/axiosInstance';
 
@@ -15,8 +16,15 @@ const initialState = {
 export const login = createAsyncThunk("auth/login", async (data) => {
   // we will not use try and catch here as thunks automatically handles fulfilled, rejected and pending actions that we describe in extraReducers
 
-  const response = await axiosInstance.post("/auth/signin", data);   // data is the formDetails that we are passing while calling dispatch(login(formDetails)) in login.jsx
-  return response.data;                                              // this will be action.payload in case of thunk
+  const response = axiosInstance.post("/auth/signin", data);   // data is the formDetails that we are passing while calling dispatch(login(formDetails)) in login.jsx
+
+  toast.promise(response, {
+    loading: 'Loading',
+    success: 'Signed in successfully',
+    error: 'Something went wrong, please try again',
+  });
+
+  return await response.data;                                  // this will be action.payload in case of thunk
 
 });
 

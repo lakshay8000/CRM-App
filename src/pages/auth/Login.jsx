@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../../redux/slices/authSlice";
 
@@ -60,12 +60,20 @@ function Login() {
 
                     <div className="card-actions justify-end w-full">
                         <button
-                            className="btn w-full"
+                            className="btn w-full hover:bg-transparent hover:text-black transition-all ease-in-out delay-100 duration-300 "
                             onClick={onSubmit}
                         >
                             Submit
                         </button>
                     </div>
+
+                    <Link 
+                        to={"/signup"} 
+                        className="mt-2 text-lg font-semibold text-decoration-line: underline hover:text-zinc-100"
+                    > 
+                        Dont have an account? Signup instead! 
+                    </Link>
+
                 </div>
             </div>
         </div>
