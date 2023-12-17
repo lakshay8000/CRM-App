@@ -18,5 +18,6 @@ module.exports = {
     ],
     "simple-import-sort/imports": "error",
     "semi": [1, "always"],
+    "react/prop-types": "off"
   },
 }

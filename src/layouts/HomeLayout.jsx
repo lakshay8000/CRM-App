@@ -17,11 +17,11 @@ function HomeLayout({ children }) {
 
    
     return (
-        <div className="min-h-[90vh] flex flex-row">
+        <div className="min-h-[90vh] flex flex-row mt-4">
 
             <div className="drawer w-1/3">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content mt-2 ">
+                <div className="drawer-content">
                     {/* Page content here */}
                     <label
                         htmlFor="my-drawer"
