@@ -7,8 +7,8 @@ import { axiosInstance } from '../../config/axiosInstance';
 
 const initialState = {
   // if data is present inside localStorage, we will fetch it from there otherwise it will be undefined
-  userData: JSON.parse(localStorage.getItem("userData")) || undefined,
-  isLoggedIn: localStorage.getItem("isLoggedIn") || false,
+  userData: JSON.parse(localStorage.getItem("userData")) || undefined,          // JSON.parse() will convert string back to object
+  isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn") || false),          // JSON.parse() will convert string back to boolean
   token: localStorage.getItem("token") || undefined
 };
 
