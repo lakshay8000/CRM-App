@@ -17,14 +17,15 @@ export const login = createAsyncThunk("auth/login", async (data) => {
   // we will not use try and catch here as thunks automatically handles fulfilled, rejected and pending actions that we describe in extraReducers
 
   const response = axiosInstance.post("/auth/signin", data);   // data is the formDetails that we are passing while calling dispatch(login(formDetails)) in login.jsx
-
+  
   toast.promise(response, {
     loading: 'Loading',
     success: 'Signed in successfully',
     error: 'Something went wrong, please try again',
   });
-
-  return await response.data;                                  // this will be action.payload in case of thunk
+  
+  const result= await response;
+  return result.data;                                  // this will be action.payload in case of thunk
 
 });
 
@@ -33,13 +34,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    resetAuthState: (state, action) => {
-      state = {
-        userData: JSON.parse(localStorage.getItem("userData")) || undefined,
-        isLoggedIn: localStorage.getItem("isLoggedIn") || false,
-        token: localStorage.getItem("token") || undefined
-      };
-    }
+    logout: (state) => {
+      localStorage.clear();
+      state.userData= undefined;
+      state.isLoggedIn= false;
+      state.token= undefined; 
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -62,4 +63,6 @@ const authSlice = createSlice({
   }
 });
 
+
+export const {logout} = authSlice.actions;
 export default authSlice;

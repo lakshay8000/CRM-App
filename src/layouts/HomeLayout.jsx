@@ -1,18 +1,21 @@
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { logout } from "../redux/slices/authSlice";
 
 
 function HomeLayout({ children }) {
 
-    const auth = useSelector(state => state.auth);
+    const authState = useSelector(state => state.auth);
     const navigate = useNavigate();
+    const dispatch= useDispatch();
 
     function handleLogout() {
+        dispatch(logout());
         navigate("/login");
-        localStorage.clear();
     }
+
 
     return (
         <div className="min-h-[90vh] flex flex-row">
@@ -35,10 +38,22 @@ function HomeLayout({ children }) {
                         <li><a>View all tickets</a></li>
                         <li onClick={handleLogout} ><a>Dashboard</a></li>
 
-                        <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">
-                            <button className=" px-4 py-1 "> Logout </button>
-                            <button className=" px-4 py-1 "> Profile </button>
-                        </div>
+                        {
+                            (authState && authState.isLoggedIn == true) ?
+                                (
+                                    <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">
+                                        <button className=" px-4 py-1 " onClick={handleLogout} > Logout </button>
+                                        <button className=" px-4 py-1 "> Profile </button>
+                                    </div>
+                                )
+                                :
+                                (
+                                    <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">
+                                        <button className=" px-4 py-1 " onClick={() => navigate("/login")} > Login </button>
+                                        <button className=" px-4 py-1 " onClick={() => navigate("/signup")} > Signup </button>
+                                    </div>
+                                )
+                        }
                     </ul>
                 </div>
             </div>
