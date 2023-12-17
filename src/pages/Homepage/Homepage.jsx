@@ -1,26 +1,14 @@
-import { useSelector } from "react-redux";
+import HomeLayout from "../../layouts/HomeLayout";
+
 
 function Homepage() {
-    const auth = useSelector(state => state.auth);
+    
 
     return (
         <>
-            {
-                auth.isLoggedIn &&
-
-                (
-                    <div className="homepage-wrapper">
-                        <div className="user-details">
-                            <div className="username" >
-                                User name- {auth.userData.name}
-                            </div>
-                            <div className="email" >
-                                Email- {auth.userData.email}
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
+            <HomeLayout>
+                home page content other than sidebar
+            </HomeLayout>
         </>
     );
 

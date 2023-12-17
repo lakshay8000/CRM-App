@@ -33,7 +33,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-
+    resetAuthState: (state, action) => {
+      state = {
+        userData: JSON.parse(localStorage.getItem("userData")) || undefined,
+        isLoggedIn: localStorage.getItem("isLoggedIn") || false,
+        token: localStorage.getItem("token") || undefined
+      };
+    }
   },
   extraReducers: (builder) => {
     builder
