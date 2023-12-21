@@ -10,7 +10,7 @@ function Card({children, fontColor="text-primary-content", borderColor="border-s
 
             <div className="flex justify-center items-center gap-8">
                 <span className="text-5xl font-bold "> {quantity} </span>
-                <div className="radial-progress font-bold" style={{"--value": status }} role="progressbar"> {status} </div>
+                <div className="radial-progress font-bold" style={{"--value": status }} role="progressbar"> {status} % </div>
             </div>
         </div>
     );

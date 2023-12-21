@@ -16,7 +16,7 @@ const initialState = {
 export const login = createAsyncThunk("auth/login", async (data) => {
   // we will not use try and catch here as thunks automatically handles fulfilled, rejected and pending actions that we describe in extraReducers
 
-  const response = axiosInstance.post("/auth/signin", data);   // data is the formDetails that we are passing while calling dispatch(login(formDetails)) in login.jsx
+  const response = axiosInstance.post("auth/signin", data);   // data is the formDetails that we are passing while calling dispatch(login(formDetails)) in login.jsx
   
   toast.promise(response, {
     loading: 'Loading',
