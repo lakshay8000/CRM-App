@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import Card from "../../components/Card";
+import useTickets from "../../hooks/useTickets";
 import HomeLayout from "../../layouts/HomeLayout";
 import { getTickets } from "../../redux/slices/ticketsSlice";
 
@@ -13,23 +14,15 @@ import { getTickets } from "../../redux/slices/ticketsSlice";
 
 
 function Homepage() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const authState = useSelector(state => state.auth);
-    const ticketsState= useSelector(state => state.tickets);
 
     useEffect(() => {
         if (!authState.isLoggedIn) navigate("/login");
     }, []);            // we are using empty dependency array because even in the case of navigation, the component gets unmounted, means whenever we will come on this page, it will be the initial render and this useEffect will trigger
 
 
-    // for getting and setting tickets assigned to the engineer in tickets state-
-    useEffect(() => {
-        if (authState.userData.userType == "engineer") {
-            dispatch(getTickets());
-        }
-    }, []);
-
+    const [ticketsState] = useTickets();
 
 
     return (

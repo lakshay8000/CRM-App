@@ -36,8 +36,8 @@ function HomeLayout({ children }) {
                     <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
                         {/* Sidebar content here */}
-                        <li><a>View all tickets</a></li>
-                        <li onClick={handleLogout} ><a>Dashboard</a></li>
+                        <li onClick={() => navigate("/")} ><a>Home</a></li>
+                        <li onClick={() => navigate("/dashboard")} ><a>Dashboard</a></li>
 
                         <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">
                             <button className=" px-4 py-1 " onClick={handleLogout} > Logout </button>
