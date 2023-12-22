@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "../redux/slices/authSlice";
+import { resetTickets } from "../redux/slices/ticketsSlice";
 
 
 function HomeLayout({ children }) {
@@ -12,6 +13,7 @@ function HomeLayout({ children }) {
 
     function handleLogout() {
         dispatch(logout());
+        dispatch(resetTickets());
         navigate("/login");
     }
 
