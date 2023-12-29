@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
-import { getTickets } from "../redux/slices/ticketsSlice";
+import { filterTickets, getTickets, resetTicketListToAllTickets } from "../redux/slices/ticketsSlice";
 
 
 
@@ -10,12 +11,26 @@ function useTickets() {
     const ticketsState= useSelector(state => state.tickets);
     const dispatch= useDispatch();
 
+    const [searchParams] = useSearchParams();
+
     // for getting and setting tickets assigned to the engineer in tickets state-
-    useEffect(() => {
+    async function loadTickets() {
         if (authState.userData.userType == "engineer") {
-            dispatch(getTickets());
+            await dispatch(getTickets());
         }
-    }, []);
+
+        if (searchParams.get("category")) {
+            // dispatch a filter action-
+            dispatch(filterTickets(searchParams.get("category")));
+        }
+        else {
+            dispatch(resetTicketListToAllTickets());
+        }
+    }
+    
+    useEffect(() => {
+        loadTickets();
+    }, [authState.token, searchParams.get("category")]);     // make changes to ticketState.ticketList only if user changes or category of ticket changes (for example category changes in dashboard)
 
     return [ticketsState];
 

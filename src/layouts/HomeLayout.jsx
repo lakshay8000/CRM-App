@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "../redux/slices/authSlice";
-import { resetTickets } from "../redux/slices/ticketsSlice";
+import { resetTicketsToEmpty } from "../redux/slices/ticketsSlice";
 
 
 function HomeLayout({ children }) {
@@ -13,7 +13,7 @@ function HomeLayout({ children }) {
 
     function handleLogout() {
         dispatch(logout());
-        dispatch(resetTickets());
+        dispatch(resetTicketsToEmpty());
         navigate("/login");
     }
 
@@ -21,7 +21,7 @@ function HomeLayout({ children }) {
     return (
         <div className="min-h-[90vh] flex flex-row mt-4">
 
-            <div className="drawer w-1/3">
+            <div className="drawer w-max ">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
                     {/* Page content here */}
@@ -49,7 +49,7 @@ function HomeLayout({ children }) {
             </div>
 
 
-            <div className="main-body w-full ">
+            <div className="main-body flex flex-row grow justify-center items-start px-4 ml-4">
                 {children}
             </div>
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { IoMdDoneAll } from "react-icons/io";
-import { MdCancel, MdEdit, MdOutlinePendingActions  } from "react-icons/md";
+import { MdCancel, MdEdit, MdOutlinePendingActions } from "react-icons/md";
 import { TbProgressBolt } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,78 +26,81 @@ function Homepage() {
 
 
     return (
-        <>
-            <HomeLayout>
-                <div className="card-wrapper flex flex-wrap gap-8 mx-4">
+        <HomeLayout>
+            <div className="card-wrapper flex flex-wrap gap-8 w-4/5">
 
-                    <Card 
-                        titleText="Open"
-                        quantity= {ticketsState.ticketDistribution.open}
-                        status= {
-                            (ticketsState.ticketList.length != 0) ?
-                            Math.floor((ticketsState.ticketDistribution.open / ticketsState.ticketList.length) * 100)
+                <Card
+                    titleText="Open"
+                    quantity={ticketsState.ticketDistribution.open}
+                    status={
+                        (ticketsState.ticketList.length != 0) ?
+                            Math.floor((ticketsState.ticketDistribution.open / ticketsState.downloadedTickets.length) * 100)
                             :
                             0
-                        }
-                    >
-                        <MdEdit size={28} />                     {/* react icon passed as children to Card component */}
-                    </Card>
+                    }
+                    ticketCategory="open"
+                >
+                    <MdEdit size={28} />                     {/* react icon passed as children to Card component */}
+                </Card>
 
-                    <Card
-                        titleText="In Progress"
-                        quantity= {ticketsState.ticketDistribution.inProgress}
-                        status= {
-                            (ticketsState.ticketList.length != 0) ?
-                            Math.floor((ticketsState.ticketDistribution.inProgress / ticketsState.ticketList.length) * 100)
+                <Card
+                    titleText="In Progress"
+                    quantity={ticketsState.ticketDistribution.inProgress}
+                    status={
+                        (ticketsState.ticketList.length != 0) ?
+                            Math.floor((ticketsState.ticketDistribution.inProgress / ticketsState.downloadedTickets.length) * 100)
                             :
                             0
-                        }
-                    >
-                        <TbProgressBolt size={28} />                   
-                    </Card>
+                    }
+                    ticketCategory="inProgress"
+                >
+                    <TbProgressBolt size={28} />
+                </Card>
 
-                    <Card
-                        titleText="Resolved"
-                        quantity= {ticketsState.ticketDistribution.resolved}
-                        status= {
-                            (ticketsState.ticketList.length != 0) ?
-                            Math.floor((ticketsState.ticketDistribution.resolved / ticketsState.ticketList.length) * 100)
+                <Card
+                    titleText="Resolved"
+                    quantity={ticketsState.ticketDistribution.resolved}
+                    status={
+                        (ticketsState.ticketList.length != 0) ?
+                            Math.floor((ticketsState.ticketDistribution.resolved / ticketsState.downloadedTickets.length) * 100)
                             :
                             0
-                        }
-                    >
-                        <IoMdDoneAll size={28} />                   
-                    </Card>
+                    }
+                    ticketCategory="resolved"
+                >
+                    <IoMdDoneAll size={28} />
+                </Card>
 
-                    <Card
-                        titleText="On Hold"
-                        quantity= {ticketsState.ticketDistribution.onHold}
-                        status= {
-                            (ticketsState.ticketList.length != 0) ?
-                            Math.floor((ticketsState.ticketDistribution.onHold / ticketsState.ticketList.length) * 100)
+                <Card
+                    titleText="On Hold"
+                    quantity={ticketsState.ticketDistribution.onHold}
+                    status={
+                        (ticketsState.ticketList.length != 0) ?
+                            Math.floor((ticketsState.ticketDistribution.onHold / ticketsState.downloadedTickets.length) * 100)
                             :
                             0
-                        }
-                    >
-                        <MdOutlinePendingActions  size={28} />                     
-                    </Card>
+                    }
+                    ticketCategory="onHold"
+                >
+                    <MdOutlinePendingActions size={28} />
+                </Card>
 
-                    <Card
-                        titleText="Cancelled"
-                        quantity= {ticketsState.ticketDistribution.cancelled}
-                        status= {
-                            (ticketsState.ticketList.length != 0) ?
-                            Math.floor((ticketsState.ticketDistribution.cancelled / ticketsState.ticketList.length) * 100)
+                <Card
+                    titleText="Cancelled"
+                    quantity={ticketsState.ticketDistribution.cancelled}
+                    status={
+                        (ticketsState.ticketList.length != 0) ?
+                            Math.floor((ticketsState.ticketDistribution.cancelled / ticketsState.downloadedTickets.length) * 100)
                             :
                             0
-                        }
-                    >
-                        <MdCancel size={28} />                    
-                    </Card>
+                    }
+                    ticketCategory="cancelled"
+                >
+                    <MdCancel size={28} />
+                </Card>
 
-                </div>
-            </HomeLayout>
-        </>
+            </div>
+        </HomeLayout>
     );
 
 }

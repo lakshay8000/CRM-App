@@ -1,6 +1,13 @@
-function Card({children, fontColor="text-primary-content", borderColor="border-success", dividerColor="bg-primary-content", bgColor="bg-primary", titleText = "Card", status = 50, quantity = 30}) {
+import { useNavigate } from "react-router-dom";
+
+function Card({children, ticketCategory, fontColor="text-primary-content", borderColor="border-success", dividerColor="bg-primary-content", bgColor="bg-primary", titleText = "Card", status = 50, quantity = 30}) {
+    const navigate= useNavigate();
+    
     return (
-        <div className= {`w-52 h-48 rounded-xl py-4 flex flex-col ${bgColor} ${fontColor} border-b-4 ${borderColor} transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:cursor-pointer duration-300 `} >
+        <div 
+            className= {`w-52 h-48 rounded-xl py-4 flex flex-col ${bgColor} ${fontColor} border-b-4 ${borderColor} transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:cursor-pointer duration-300 `}
+            onClick={() => navigate(`/dashboard?category=${ticketCategory}`)}
+        >
             <div className="flex justify-center gap-1">
                 {children}
                 <span className="text-lg font-bold">{titleText}</span>
