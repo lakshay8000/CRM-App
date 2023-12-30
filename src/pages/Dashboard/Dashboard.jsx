@@ -1,8 +1,13 @@
+import DataTable from 'react-data-table-component';
 import { LuDownload } from "react-icons/lu";
-import { usePDF } from "react-to-pdf";
+import {Margin, usePDF  } from "react-to-pdf";
 
 import useTickets from "../../hooks/useTickets";
 import HomeLayout from "../../layouts/HomeLayout";
+
+
+
+
 
 // tickets dashboard-
 function Dashboard() {
@@ -13,11 +18,78 @@ function Dashboard() {
         filename: `Tickets.pdf`, // edit here
         page: {
             orientation: "landscape",
+            margin: Margin.SMALL,
         },
     });
 
-    // for displaying only the tickets of a particular category
-    let serialNumber = 0;
+    // for react data table component library-
+    const columns = [
+        {
+            name: 'Ticket Id',
+            selector: row => row._id,
+            grow : 1,
+        },
+        {
+            name: 'Title',
+            selector: row => row.title,
+            grow : 1
+        },
+        {
+            name: 'Description',
+            selector: row => row.description,
+            grow : 2,
+        },
+        {
+            name: 'Reporter',
+            selector: row => row.assignedTo,
+            grow : 2
+        },
+        {
+            name: 'Priority',
+            selector: row => row.ticketPriority,
+            grow : 1
+        },
+        {
+            name: 'Asignee',
+            selector: row => row.assignee,
+            grow : 2
+        },
+        {
+            name: 'Status',
+            selector: row => row.status,
+            grow : 1
+        }
+    ];
+
+    // for react data table component library-
+    const customStyles = {
+        rows: {
+            style: {
+                minHeight: '72px', // override the row height
+            },
+        },
+        headCells: {
+            style: {
+                paddingLeft: '8px', // override the cell padding for head cells
+                paddingRight: '8px',
+                fontSize : "1.25rem",
+                fontWeight : "bold",
+                display : "flex",
+                justifyContent : "center"
+            },
+        },
+        cells: {
+            style: {
+                paddingLeft: '8px', // override the cell padding for data cells
+                paddingRight: '8px',
+                display : "flex",
+                justifyContent : "center",
+            },
+        },
+    };
+
+    // for react data table component library-
+    const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
     return (
 
@@ -44,45 +116,19 @@ function Dashboard() {
                 </div>
 
                 <div className="table-wrapper pt-4">
-                    <div className="overflow-x-auto h-96">
-                        
-                        <table className="table-md w-full" ref={targetRef}>
-                            <thead>
-                                <tr className="text-xl text-center">
-                                    <th></th>
-                                    <th>Ticket Id</th>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Reporter</th>
-                                    <th>Priority</th>
-                                    <th>Asignee</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    ticketsState.ticketList.length != 0 
-                                    &&
-                                    ticketsState.ticketList.map((ticket) => {
-                                        serialNumber++;
-                                        return (
-                                            <tr key={ticket._id} className="text-center">
-                                                <th>{serialNumber}</th>
-                                                <td>{ticket._id}</td>
-                                                <td>{ticket.title}</td>
-                                                <td>{ticket.description}</td>
-                                                <td>{ticket.assignedTo}</td>
-                                                <td>{ticket.ticketPriority}</td>
-                                                <td>{ticket.assignee}</td>
-                                                <td>{ticket.status}</td>
-                                            </tr>
-                                        );
-                                    })
-                                }
-                            </tbody>
-                        </table>
-
-                    </div>
+                    {
+                        ticketsState.ticketList
+                        &&
+                        <div ref= {targetRef} >
+                            <DataTable
+                                columns={columns}
+                                data={ticketsState.ticketList}
+                                customStyles={customStyles}
+                                expandableRows
+                                expandableRowsComponent={ExpandedComponent}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         </HomeLayout>
