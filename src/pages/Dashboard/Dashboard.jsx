@@ -13,7 +13,7 @@ import HomeLayout from "../../layouts/HomeLayout";
 function Dashboard() {
     const [ticketsState] = useTickets();
 
-    // using react-to-pdf for export to pdf functionality-
+    // using react-to-pdf package for export to pdf functionality-
     const { toPDF, targetRef } = usePDF({
         filename: `Tickets.pdf`, // edit here
         page: {
@@ -22,7 +22,7 @@ function Dashboard() {
         },
     });
 
-    // for react data table component library-
+    // for react data table component package-
     const columns = [
         {
             name: 'Ticket Id',
@@ -61,7 +61,7 @@ function Dashboard() {
         }
     ];
 
-    // for react data table component library-
+    // for react data table component package-
     const customStyles = {
         rows: {
             style: {
@@ -88,7 +88,7 @@ function Dashboard() {
         },
     };
 
-    // for react data table component library-
+    // for react data table component package-
     const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
     return (
