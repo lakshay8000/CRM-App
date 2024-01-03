@@ -1,5 +1,5 @@
 import { ArcElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Title, Tooltip,  } from 'chart.js';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import React from 'react';
 import { Line, Pie } from 'react-chartjs-2';
 import { IoMdDoneAll } from "react-icons/io";
@@ -18,6 +18,15 @@ import HomeLayout from "../../layouts/HomeLayout";
 function Homepage() {
     const navigate = useNavigate();
     const authState = useSelector(state => state.auth);
+    
+    // here we will store the date as key and number of tickets as value-
+    const [ticketsChartData, setTicketsChartData] = useState({
+        open : {},
+        inProgress : {},
+        resolved : {},
+        onHold : {},
+        cancelled : {}
+    });
 
     useEffect(() => {
         if (!authState.isLoggedIn) navigate("/login");
@@ -61,86 +70,144 @@ function Homepage() {
     const lineChartOptions = {
         scales: {
             y: {
-              ticks: {
-                stepSize: 1, // Set the step size for the y-axis ticks
-              },
+                   beginAtZero: true,
+                   ticks: {
+                     stepSize: 1,
+                   },
             },
-          },
+        },
     };
       
-    // this functioon will return us an obj with dates as key and their default values as 0
-    function getDateRange(range) {        
-        // get start date in the format YYYY-MM-DD. Start date= curr date - range
-        let startDate= new Date();
-        startDate.setDate(startDate.getDate() - range);
-        // console.log(startDate);
+    // this fn will create a freq map for all the ticket categories with dates as key and number of tickets as value and then we will update the ticketsChartData state.
+    function processTickets(range) {
+        if (ticketsState.ticketList.length > 0) {
 
-        // Add all the dates from start date to curr date in an obj-
-        const dateMap= {};
-        for (let i= 0; i< range; i++) {
-            let date= startDate;
-            date.setDate(date.getDate() + 1);
-            date= date.toLocaleString().split(",")[0].split("/").reverse().join("-");
-            
-            dateMap[date] = 0;
-        }
-
-        // console.log(dateMap);
-        return dateMap;
-    }
-
-    // this function will populate the frequency map according to the ticket category passed as argument
-    function mapTicketsWithDates(category) {
-        const frequencyMap= getDateRange(15);
-        const filteredTicketList= ticketsState.ticketList.filter((ticket) => ticket.status == category);
-
-        // populate frequency map-
-        filteredTicketList.forEach((ticket) => {
-            if (
-                frequencyMap[ticket.createdAt.substring(0, 10)]
-                ||
-                frequencyMap[ticket.createdAt.substring(0, 10)] == 0
-            ) {
-                frequencyMap[ticket.createdAt.substring(0, 10)] ++ ;
+            // get the starting date with help of range passed as argument
+            let startDate= new Date();
+            startDate.setDate(startDate.getDate() - range);
+            // console.log(startDate);
+    
+            // freq map for all  the ticket categories-
+            const openTicketsData= {};
+            const inProgressTicketsData= {};
+            const resolvedTicketsData= {};
+            const onHoldTicketsData= {};
+            const cancelledTicketsData= {}; 
+    
+            // create a freq map with all the initial values as 0-
+            for (let i= 0; i< range; i++) {
+                let date= startDate;
+                date.setDate(date.getDate() + 1);
+                date= date.toLocaleString().split(",")[0].split("/").reverse().join("-");
+                
+                openTicketsData[date] = 0;
+                inProgressTicketsData[date] = 0;
+                resolvedTicketsData[date] = 0;
+                onHoldTicketsData[date] = 0;
+                cancelledTicketsData[date] = 0;
             }
-        });
-
-        // console.log(frequencyMap);
-        return frequencyMap;
+    
+            // iterate over ticketList array and populate all the frequency maps-
+            ticketsState.ticketList.forEach((ticket) => {
+                if (ticket.status == "open" 
+                    && 
+                    (
+                    openTicketsData[ticket.createdAt.substring(0, 10)]
+                    ||
+                    openTicketsData[ticket.createdAt.substring(0, 10)] == 0
+                    )
+                    ) {
+                    openTicketsData[ticket.createdAt.substring(0, 10)] ++ ;
+                }
+                else if (ticket.status == "inProgress" 
+                    && 
+                    (
+                    inProgressTicketsData[ticket.createdAt.substring(0, 10)]
+                    ||
+                    inProgressTicketsData[ticket.createdAt.substring(0, 10)] == 0
+                    )
+                    ) {
+                    inProgressTicketsData[ticket.createdAt.substring(0, 10)] ++ ;
+                }
+                else if (ticket.status == "resolved" 
+                    && 
+                    (
+                    resolvedTicketsData[ticket.createdAt.substring(0, 10)]
+                    ||
+                    resolvedTicketsData[ticket.createdAt.substring(0, 10)] == 0
+                    )
+                    ) {
+                    resolvedTicketsData[ticket.createdAt.substring(0, 10)] ++ ;
+                }
+                else if (ticket.status == "onHold" 
+                    && 
+                    (
+                    onHoldTicketsData[ticket.createdAt.substring(0, 10)]
+                    ||
+                    onHoldTicketsData[ticket.createdAt.substring(0, 10)] == 0
+                    )
+                    ) {
+                    onHoldTicketsData[ticket.createdAt.substring(0, 10)] ++ ;
+                }
+                else if (ticket.status == "cancelled" 
+                    && 
+                    (
+                    cancelledTicketsData[ticket.createdAt.substring(0, 10)]
+                    ||
+                    cancelledTicketsData[ticket.createdAt.substring(0, 10)] == 0
+                    )
+                    ) {
+                    cancelledTicketsData[ticket.createdAt.substring(0, 10)] ++ ;
+                }
+            });
+    
+            // update ticketChartData state-
+            setTicketsChartData({
+                open : openTicketsData,
+                inProgress : inProgressTicketsData,
+                resolved : resolvedTicketsData,
+                onHold : onHoldTicketsData,
+                cancelled : cancelledTicketsData
+            });
+        }
     }
 
-    const labels = Object.keys(getDateRange(15));
+    useEffect(() => {
+        processTickets(15);
+    }, [ticketsState.ticketList]);
+
+    const labels = Object.keys(ticketsChartData.open);  // this will return us the array of dates according to the range passed. Dates will be the same for all the ticket categories
 
     const lineChartData = {
         labels,
         datasets: [
             {
-                label: 'Dataset 1',
-                data: Object.values(mapTicketsWithDates("open")),
+                label: 'Open',
+                data: Object.values(ticketsChartData.open),
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
             },
             {
                 label: 'In Progress',
-                data: mapTicketsWithDates("inProgress"),
+                data: Object.values(ticketsChartData.inProgress),
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
             {
                 label: 'Resolved',
-                data: mapTicketsWithDates("resolved"),
+                data: Object.values(ticketsChartData.resolved),
                 borderColor: 'rgba(255, 206, 86, 1)',
                 backgroundColor: 'rgba(255, 206, 86, 0.2)',
             },
             {
                 label: 'On Hold',
-                data: mapTicketsWithDates("onHold"),
+                data: Object.values(ticketsChartData.onHold),
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
             },
             {
                 label: 'Cancelled',
-                data: mapTicketsWithDates("cancelled"),
+                data: Object.values(ticketsChartData.cancelled),
                 borderColor: 'rgba(153, 102, 255, 1)',
                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
             },
