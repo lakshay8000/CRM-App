@@ -5,29 +5,27 @@ import { axiosInstance } from "../config/axiosInstance";
 
 function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
 
-    const userStatusDropdownRef = useRef();
-    
     async function handleStatusChange(e) {
+        const dropdownName= e.target.parentNode.parentNode.getAttribute("name");
+        
         // for closing the dropdown (instructions for closing dropdown on daisyui website)
-        userStatusDropdownRef.current.removeAttribute("open");
+        const dropdownElement= document.getElementById(`${dropdownName}Dropdown`);
+        dropdownElement.removeAttribute("open");
 
         // update user on backend-
         const response = axiosInstance.patch("user/updateUser", {
             userId: userDisplay._id,
             updates: {
-                name: userDisplay.name,
-                email: userDisplay.email,
-                userType: userDisplay.userType,
-                userStatus: e.target.textContent,
-                clientName: userDisplay.clientName,
-                _id: userDisplay._id
+                ...userDisplay,
+                [dropdownName]: e.target.textContent
             }
         },
-        {
-            headers: {
-                "x-access-token": localStorage.getItem("token")
+            {
+                headers: {
+                    "x-access-token": localStorage.getItem("token")
+                }
             }
-        });
+        );
 
         toast.promise(response, {
             loading: 'Updating User',
@@ -39,8 +37,7 @@ function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
         // update status in userDisplay state so that it re renders the current state and show that on the dropdown
         setUserDisplay({
             ...userDisplay,
-            userStatus: e.target.textContent,
-            name : "lakshay"
+            [dropdownName]: e.target.textContent
         });
 
         // to update the table-
@@ -57,17 +54,27 @@ function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
 
                 <div className="pt-8">
                     Status :
-                    <details className="dropdown ml-6" ref={userStatusDropdownRef} >
+                    <details id= "userStatusDropdown" className="dropdown ml-6">
                         <summary className="m-1 btn"> {userDisplay.userStatus} </summary>
-                        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" onClick={handleStatusChange} >
-                            <li><a> approved </a></li>
-                            <li><a> suspended </a></li>
-                            <li><a> rejected </a></li>
+                        <ul name= "userStatus" onClick={handleStatusChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" >
+                            <li><a>approved</a></li>
+                            <li><a>suspended</a></li>
+                            <li><a>rejected</a></li>
                         </ul>
                     </details>
                 </div>
 
-                <p className="pt-8"> Type : {userDisplay.userType} </p>
+                <div className="pt-8">
+                    Type :
+                    <details id= "userTypeDropdown" className="dropdown ml-6">
+                        <summary className="m-1 btn"> {userDisplay.userType} </summary>
+                        <ul name= "userType" onClick={handleStatusChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                            <li><a>customer</a></li>
+                            <li><a>engineer</a></li>
+                        </ul>
+                    </details>
+                </div>
+
                 <p className="pt-8"> Email : {userDisplay.email} </p>
             </div>
             <form method="dialog" className="modal-backdrop">
