@@ -1,11 +1,10 @@
-import { useRef } from "react";
 import toast from "react-hot-toast";
 
 import { axiosInstance } from "../config/axiosInstance";
 
 function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
 
-    async function handleStatusChange(e) {
+    async function handleUserChange(e) {
         const dropdownName= e.target.parentNode.parentNode.getAttribute("name");
         
         // for closing the dropdown (instructions for closing dropdown on daisyui website)
@@ -56,7 +55,7 @@ function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
                     Status :
                     <details id= "userStatusDropdown" className="dropdown ml-6">
                         <summary className="m-1 btn"> {userDisplay.userStatus} </summary>
-                        <ul name= "userStatus" onClick={handleStatusChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" >
+                        <ul name= "userStatus" onClick={handleUserChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52" >
                             <li><a>approved</a></li>
                             <li><a>suspended</a></li>
                             <li><a>rejected</a></li>
@@ -68,7 +67,7 @@ function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
                     Type :
                     <details id= "userTypeDropdown" className="dropdown ml-6">
                         <summary className="m-1 btn"> {userDisplay.userType} </summary>
-                        <ul name= "userType" onClick={handleStatusChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                        <ul name= "userType" onClick={handleUserChange} className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
                             <li><a>customer</a></li>
                             <li><a>engineer</a></li>
                         </ul>

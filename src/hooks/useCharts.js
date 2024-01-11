@@ -151,7 +151,7 @@ function useCharts(ticketsState) {
                 const date= new Date(ticket.createdAt.split("T")[0]);            // this will give us the date string of ticket
                 const month= date.toLocaleString('default', { month: 'long' });  // this will give us the month name from js date object
 
-                console.log(month);
+                // console.log(month);
                 if (ticket.status == "open") {
                     monthlyOpenTickets[month] ++ ;
                 }
@@ -169,7 +169,7 @@ function useCharts(ticketsState) {
                 }
             });
 
-            console.log(monthlyOpenTickets);
+            // console.log(monthlyOpenTickets);
     
             // update ticketChartData state-
             setTicketsChartData({

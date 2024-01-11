@@ -13,7 +13,7 @@ import HomeLayout from "../../layouts/HomeLayout";
 
 // tickets dashboard-
 function Dashboard() {
-    const [ticketsState] = useTickets();
+    const [ticketsState] = useTickets();    
 
     // details to be shown on click of rows-
     const [selectedTicket, setSelectedTicket] = useState({});
@@ -138,12 +138,21 @@ function Dashboard() {
                                     });
                                     document.getElementById('ticket-details-modal').showModal();
                                 }}
+                                onRowMouseEnter={(row, event) => {
+                                    event.target.style.cursor = "pointer";
+                                }}
+                                onRowMouseLeave={(row, event) => {
+                                    event.target.style.cursor = "auto";
+                                }}
                             />
                         </div>
                     }
                 </div>
 
-                <TicketDetailsModal selectedTicket= {selectedTicket} />
+                <TicketDetailsModal 
+                    selectedTicket= {selectedTicket} 
+                    setSelectedTicket= {setSelectedTicket}
+                />
 
             </div>
         </HomeLayout>

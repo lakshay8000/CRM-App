@@ -1,4 +1,31 @@
-function TicketDetailsModal({selectedTicket}) {
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+
+import { filterTickets, updateTicket } from "../redux/slices/ticketsSlice";
+
+function TicketDetailsModal({selectedTicket, setSelectedTicket}) {
+    const dispatch= useDispatch();
+    const [searchParams] = useSearchParams();
+
+    // this fn will just change the details in selectedTicket state
+    function handleTicketUpdate(e) {
+        const dropdownName= e.target.name;
+        setSelectedTicket({
+            ...selectedTicket,
+            [dropdownName] : e.target.value
+        });
+    }
+
+    async function handleFormSubmit() {
+        await dispatch(updateTicket(selectedTicket));
+        
+        // If the category/status of the ticket has changed during updation, we will filter it so that it doesn't show on the current page
+        if (searchParams.get("category")) {
+            // dispatch a filter action-
+            dispatch(filterTickets(searchParams.get("category")));
+        }
+    }
+
     return (
         // Ticket details diasyui popup modal
         <dialog id="ticket-details-modal" className="modal">
@@ -9,10 +36,11 @@ function TicketDetailsModal({selectedTicket}) {
                 {/* use textarea tag for description */}
                 <textarea
                     name="description"
-                    className="w-full mt-4 rounded-md p-2"
+                    className="w-full mt-4 rounded-md p-2 resize-none"
                     rows={10}
                     cols={20}
                     value={selectedTicket.description}
+                    onChange={handleTicketUpdate}
                 >
                     
                 </textarea>
@@ -20,29 +48,41 @@ function TicketDetailsModal({selectedTicket}) {
                 {/* Used select and option tags manually to create dropdown */}
                 <h3>
                     <label htmlFor="ticket-priority">Priority :</label>
-                    <select id="ticket-priority" className="ml-2 rounded-md px-2 py-1 mt-4">
-                        <option value="1" selected= {selectedTicket.ticketPriority == 1}>1</option>
-                        <option value="2" selected= {selectedTicket.ticketPriority == 2}>2</option>
-                        <option value="3" selected= {selectedTicket.ticketPriority == 3}>3</option>
-                        <option value="4" selected= {selectedTicket.ticketPriority >= 4}>4</option>
+                    <select 
+                        name= "ticketPriority"
+                        id="ticket-priority"
+                        onChange={handleTicketUpdate} 
+                        value={selectedTicket.ticketPriority}  
+                        className="ml-2 rounded-md px-2 py-1 mt-4"
+                    >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
                     </select>
                 </h3>
 
                 {/* Used select and option tags manually to create dropdown */}
                 <h3>
                     <label htmlFor="ticket-status">Status :</label>
-                    <select id="ticket-status" className="ml-2 rounded-md px-2 py-1 mt-4">
-                        <option value="open" selected= {selectedTicket.status == "open"}>open</option>
-                        <option value="inProgress" selected= {selectedTicket.status == "inProgress"}>inProgress</option>
-                        <option value="resolved" selected= {selectedTicket.status == "resolved"}>resolved</option>
-                        <option value="onHold" selected= {selectedTicket.status == "onHold"}>onHold</option>
-                        <option value="cancelled" selected= {selectedTicket.status == "cancelled"}>cancelled</option>
+                    <select 
+                        name= "status"
+                        id="ticket-status"
+                        onChange={handleTicketUpdate}
+                        value={selectedTicket.status}  
+                        className="ml-2 rounded-md px-2 py-1 mt-4"
+                    >
+                        <option value="open">open</option>
+                        <option value="inProgress">inProgress</option>
+                        <option value="resolved">resolved</option>
+                        <option value="onHold">onHold</option>
+                        <option value="cancelled">cancelled</option>
                     </select>
                 </h3>
 
                 {/* Taken from another daisyui modal which was having colse button */}
                 <div className="modal-action">
-                    <button className="btn btn-primary font-bold">
+                    <button onClick={handleFormSubmit} className="btn btn-primary font-bold">
                         Update Ticket
                     </button>
                 </div>
