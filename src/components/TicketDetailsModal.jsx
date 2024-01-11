@@ -24,6 +24,9 @@ function TicketDetailsModal({selectedTicket, setSelectedTicket}) {
             // dispatch a filter action-
             dispatch(filterTickets(searchParams.get("category")));
         }
+
+        // after updating the ticket, we will close the popped up modal now-
+        document.getElementById("ticket-details-modal").close();
     }
 
     return (
