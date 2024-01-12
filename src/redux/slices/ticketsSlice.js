@@ -23,7 +23,7 @@ export const getTickets = createAsyncThunk("tickets/getTickets", async () => {
             "x-access-token": localStorage.getItem("token")
         }
     });
-    return response.data.result;
+    return response?.data?.result;
 });
 
 export const updateTicket = createAsyncThunk("tickets/updateTickets", async (updatedTicketDetails) => {
@@ -49,6 +49,29 @@ export const updateTicket = createAsyncThunk("tickets/updateTickets", async (upd
         console.log(error);
     }
 
+});
+
+export const createTicket= createAsyncThunk("tickets/createTicket", async (ticket) => {
+    try {
+        const response= axiosInstance.post("ticket", 
+        ticket,   // new ticket which we created passed as req body  
+        {
+            headers : {
+                "x-access-token" : localStorage.getItem("token")
+            }
+        });
+    
+        toast.promise(response, {
+            success : "Successfully created ticket",
+            loading : "Creating new ticket",
+            error : "Somthing went wrong"
+        });
+    
+        return (await response)?.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 
 
@@ -79,6 +102,7 @@ const ticketsSlice = createSlice({
     extraReducers: (builder) => builder
         .addCase(getTickets.fulfilled, (state, action) => {
             if (!action.payload) return;
+            // console.log(action.payload);
 
             state.downloadedTickets = action.payload;
             state.ticketList = action.payload;
@@ -94,9 +118,11 @@ const ticketsSlice = createSlice({
                 state.ticketDistribution[ticket.status]++;
             });
         })
+        
         .addCase(getTickets.rejected, (state, action) => {
             console.log(action.error.message);
         })
+        
         .addCase(updateTicket.fulfilled, (state, action) => {
             // console.log(action.payload);
             
@@ -129,6 +155,18 @@ const ticketsSlice = createSlice({
             state.downloadedTickets.forEach((ticket) => {       // distribute tickets
                 state.ticketDistribution[ticket.status]++;
             });
+        })
+        
+        .addCase(createTicket.fulfilled, (state, action) => {
+            if (!action.payload) return;
+        
+            const newTicket= action.payload;
+            // console.log(newTicket);
+
+            // update downloadedTickets, ticketList and ticketDistribution state-
+            state.downloadedTickets.push(newTicket);
+            state.ticketList= state.downloadedTickets;
+            state.ticketDistribution.open ++ ;
         })
 });
 
