@@ -1,5 +1,5 @@
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "../redux/slices/authSlice";
@@ -7,6 +7,7 @@ import { resetTicketsToEmpty } from "../redux/slices/ticketsSlice";
 
 
 function HomeLayout({ children }) {
+    const authState= useSelector(state => state.auth);
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -38,6 +39,12 @@ function HomeLayout({ children }) {
                         {/* Sidebar content here */}
                         <li onClick={() => navigate("/")} ><a>Home</a></li>
                         <li onClick={() => navigate("/dashboard")} ><a>Dashboard</a></li>
+                        
+                        {
+                            authState.isLoggedIn == true
+                            &&
+                            <li onClick={() => navigate("/ticket/create")} ><a>Raise a ticket</a></li>
+                        }
 
                         <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">
                             <button className=" px-4 py-1 " onClick={handleLogout} > Logout </button>
