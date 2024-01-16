@@ -45,7 +45,7 @@ function Dashboard() {
             grow: 2,
         },
         {
-            name: 'Reporter',
+            name: 'Assigned To',
             selector: row => row.assignedTo,
             grow: 2
         },

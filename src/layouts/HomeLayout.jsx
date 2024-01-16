@@ -41,9 +41,15 @@ function HomeLayout({ children }) {
                         <li onClick={() => navigate("/dashboard")} ><a>Dashboard</a></li>
                         
                         {
-                            authState.isLoggedIn == true
+                            authState?.isLoggedIn == true
                             &&
                             <li onClick={() => navigate("/ticket/create")} ><a>Raise a ticket</a></li>
+                        }
+
+                        {
+                            authState?.userData?.userType == "admin"
+                            &&
+                            <li onClick={() => navigate("/users")} ><a>Users info</a></li>
                         }
 
                         <div className="w-1/2 gap-12 absolute bottom-8 flex justify-between ">

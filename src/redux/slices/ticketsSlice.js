@@ -74,6 +74,28 @@ export const createTicket= createAsyncThunk("tickets/createTicket", async (ticke
     }
 });
 
+export const getTicketsForCustomer= createAsyncThunk("tickets/getTicketsForCustomer", async () => {
+    try {
+        const response= await axiosInstance.get("getMyCreatedTickets", {
+            headers : {
+                "x-access-token" : localStorage.getItem("token")
+            }
+        });
+        return response?.data?.result;
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+
+export const getAllTicketsForAdmin= createAsyncThunk("tickets/getAllTicketsForAdmin", async () => {
+    const response= await axiosInstance("ticket", {
+        headers : {
+            "x-access-token" : localStorage.getItem("token")
+        }
+    });
+    return response?.data?.result;
+});
 
 const ticketsSlice = createSlice({
     name: "tickets",
@@ -102,7 +124,7 @@ const ticketsSlice = createSlice({
     extraReducers: (builder) => builder
         .addCase(getTickets.fulfilled, (state, action) => {
             if (!action.payload) return;
-            // console.log(action.payload);
+            console.log(action.payload);
 
             state.downloadedTickets = action.payload;
             state.ticketList = action.payload;
@@ -125,6 +147,7 @@ const ticketsSlice = createSlice({
         
         .addCase(updateTicket.fulfilled, (state, action) => {
             // console.log(action.payload);
+            if (!action.payload) return;
             
             const updatedTicket= action.payload;
 
@@ -167,6 +190,43 @@ const ticketsSlice = createSlice({
             state.downloadedTickets.push(newTicket);
             state.ticketList= state.downloadedTickets;
             state.ticketDistribution.open ++ ;
+        })
+
+        .addCase(getTicketsForCustomer.fulfilled, (state, action) => {
+            if (!action.payload) return;
+            console.log(action.payload);
+
+            // update downloadedTickets, ticketList and ticketDistribution state-
+            state.downloadedTickets= action.payload;
+            state.ticketList= action.payload;
+            state.ticketDistribution = {                        // everytime reset ticketDistribution state in case of logic called again
+                open: 0,
+                inProgress: 0,
+                resolved: 0,
+                onHold: 0,
+                cancelled: 0
+            };
+            state.downloadedTickets.forEach((ticket) => {       // distribute tickets
+                state.ticketDistribution[ticket.status]++;
+            });
+        })
+
+        .addCase(getAllTicketsForAdmin.fulfilled, (state, action) => {
+            if (!action.payload) return;
+
+            // update downloadedTickets, ticketList and ticketDistribution state-
+            state.downloadedTickets = action.payload;
+            state.ticketList = action.payload;
+            state.ticketDistribution = {                        // everytime reset ticketDistribution state in case of logic called again
+                open: 0,
+                inProgress: 0,
+                resolved: 0,
+                onHold: 0,
+                cancelled: 0
+            };
+            state.downloadedTickets.forEach((ticket) => {       // distribute tickets
+                state.ticketDistribution[ticket.status]++;
+            });
         })
 });
 

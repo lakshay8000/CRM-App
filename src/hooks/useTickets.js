@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-import { filterTickets, getTickets, resetTicketListToAllTickets } from "../redux/slices/ticketsSlice";
+import { filterTickets, getAllTicketsForAdmin, getTickets, getTicketsForCustomer, resetTicketListToAllTickets } from "../redux/slices/ticketsSlice";
 
 
 
@@ -13,10 +13,19 @@ function useTickets() {
 
     const [searchParams] = useSearchParams();
 
-    // for getting and setting tickets assigned to the engineer in tickets state-
+    // for getting and setting tickets in tickets state-
     async function loadTickets() {
-        if (authState.userData.userType == "engineer" && ticketsState.downloadedTickets.length == 0) {
-            await dispatch(getTickets());
+        // if there are no tickets loaded-
+        if (ticketsState.downloadedTickets.length == 0) {
+            if (authState.userData.userType == "customer") {
+                await dispatch(getTicketsForCustomer());     // this will load tickets created by the customer
+            }
+            else if (authState.userData.userType == "engineer") {
+                await dispatch(getTickets());               
+            }
+            else if (authState.userData.userType == "admin") {
+                await dispatch(getAllTicketsForAdmin());
+            }
         }
 
         if (searchParams.get("category")) {

@@ -16,8 +16,9 @@ function CreateTicket() {
         description : "",
         status : "open",
         ticketPriority : 4,
-        clientName : authState.userData.clientName
-        // assignee, assignedTo and createdBy will be handled by backend
+        clientName : authState.userData.clientName,
+        assignedTo : "testengineer1@admin.com"
+        // assignee and createdBy will be handled by backend. I have fixed assignedTo to testEngineer1 because of backend bug issue. Created only 1 engineer- testEngineer1, so randomly also all the tickets will be assigned to testEngineer1 only
     });
 
     function handleFormChange(e) {
@@ -44,8 +45,9 @@ function CreateTicket() {
                 description : "",
                 status : "open",
                 ticketPriority : 4,
-                clientName : authState.userData.clientName
-                // assignee, assignedTo and createdBy will be handled by backend
+                clientName : authState.userData.clientName,
+                assignedTo : "testengineer1@admin.com"
+                // assignee and createdBy will be handled by backend. I have fixed assignedTo to testEngineer1 because of backend bug issue. Created only 1 engineer- testEngineer1, so randomly also all the tickets will be assigned to testEngineer1 only
             });
         }
     }
