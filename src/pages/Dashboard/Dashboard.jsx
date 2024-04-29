@@ -56,11 +56,11 @@ function Dashboard() {
                     </div>
                 </div>
 
-                <div className="table-wrapper pt-4">
+                <div className="table-wrapper pt-4 max-w-full">
                     {
                         ticketsState.ticketList
                         &&
-                        <div ref={targetRef} >
+                        <div ref={targetRef} className='max-w-full' >
                             <DataTable
                                 columns={columns}
                                 data={ticketsState.ticketList}
