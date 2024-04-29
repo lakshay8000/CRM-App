@@ -30,7 +30,7 @@ function CreateTicket() {
     }
 
     async function onFormSubmit(e) {
-        e.preventDefault();     // default behaviour on submission of form is that th epage refreshes
+        e.preventDefault();     // default behaviour on submission of form is that the page refreshes
 
         if (ticket.title == "" || ticket.description == "") {
             toast.error("Title and description are mandatory");

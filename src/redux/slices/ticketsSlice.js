@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
 
 
-
 const initialState = {
     downloadedTickets: [],
     ticketList: [],
@@ -124,12 +123,12 @@ const ticketsSlice = createSlice({
     extraReducers: (builder) => builder
         .addCase(getTickets.fulfilled, (state, action) => {
             if (!action.payload) return;
-            console.log(action.payload);
+            // console.log(action.payload);
 
             state.downloadedTickets = action.payload;
             state.ticketList = action.payload;
 
-            state.ticketDistribution = {                        // everytime reset ticketDistribution state in case of logic called again
+            state.ticketDistribution = {       // everytime reset ticketDistribution state in case of logic called again
                 open: 0,
                 inProgress: 0,
                 resolved: 0,
@@ -194,7 +193,7 @@ const ticketsSlice = createSlice({
 
         .addCase(getTicketsForCustomer.fulfilled, (state, action) => {
             if (!action.payload) return;
-            console.log(action.payload);
+            // console.log(action.payload);
 
             // update downloadedTickets, ticketList and ticketDistribution state-
             state.downloadedTickets= action.payload;
@@ -229,8 +228,6 @@ const ticketsSlice = createSlice({
             });
         })
 });
-
-
 
 
 export const { resetTicketListToAllTickets } = ticketsSlice.actions;

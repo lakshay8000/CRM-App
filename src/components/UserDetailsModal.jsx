@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 
 import { axiosInstance } from "../config/axiosInstance";
 
+
 function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
 
     async function handleUserChange(e) {

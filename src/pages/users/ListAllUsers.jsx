@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 
 import UserDetailsModal from "../../components/UserDetailsModal";
 import { axiosInstance } from "../../config/axiosInstance";
+import useUsersDataTable from "../../hooks/useUsersDataTable";
 import HomeLayout from "../../layouts/HomeLayout";
 
 function ListAllUsers() {
@@ -22,56 +23,15 @@ function ListAllUsers() {
                 "x-access-token": localStorage.getItem("token")
             }
         });
-        setUserList([...response?.data?.result]);    // In case of error, Spreading undefined or null will result in an empty array in the context of creating a new array with the spread operator
+        setUserList([...response?.data?.result]);    // In case of error, Spreading undefined or null will result in an empty array in the context of creating a new array with the spread operator. This will happen because we are using optional chaining here
     }
 
     useEffect(() => {
         loadUsers();
     }, []);
 
-    // for react data table component package-
-    const columns = [
-        {
-            name: 'User Id',
-            selector: row => row._id,
-            grow: 2
-        },
-        {
-            name: 'Name',
-            selector: row => row.name,
-            grow: 1
-        },
-        {
-            name: 'Email',
-            selector: row => row.email,
-            grow: 2
-        },
-        {
-            name: 'Status',
-            selector: row => row.userStatus,
-            grow: 1
-        },
-        {
-            name: 'Type',
-            selector: row => row.userType,
-            grow: 1
-        },
-    ];
-
-    const customStyles = {
-        headCells: {
-            style: {
-                display: "flex",
-                justifyContent: "center"
-            },
-        },
-        cells: {
-            style: {
-                display: "flex",
-                justifyContent: "center"
-            },
-        },
-    };
+    // custom hook for react data table component package-
+    const [columns, customStyles] = useUsersDataTable();
 
 
     return (

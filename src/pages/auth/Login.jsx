@@ -43,8 +43,8 @@ function Login() {
                     <input
                         name="email"
                         onChange={handleInputChange}
-                        type="text"
-                        placeholder="email"
+                        type="email"
+                        placeholder="Email"
                         value={formDetails.email}
                         className="input input-bordered w-full max-w-xs mt-4 text-white"
                     />
@@ -52,7 +52,7 @@ function Login() {
                     <input
                         name="password"
                         onChange={handleInputChange}
-                        type="text"
+                        type="password"
                         placeholder="Password"
                         value={formDetails.password}
                         className="input input-bordered w-full max-w-xs mb-4 text-white"

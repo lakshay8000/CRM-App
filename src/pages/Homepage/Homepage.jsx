@@ -20,7 +20,7 @@ function Homepage() {
 
     useEffect(() => {
         if (!authState.isLoggedIn) navigate("/login");
-    }, []);            // we are using empty dependency array because even in the case of navigation, the component gets unmounted, means whenever we will come on this page, it will be the initial render and this useEffect will trigger
+    }, []);  // we are using empty dependency array because even in the case of navigation, the component gets unmounted, means whenever we will come on this page, it will be the initial render and this useEffect will trigger
 
 
     const [ticketsState] = useTickets();
@@ -42,7 +42,7 @@ function Homepage() {
                         }
                         ticketCategory="open"
                     >
-                        <MdEdit size={28} />                     {/* react icon passed as children to Card component */}
+                        <MdEdit size={28} />    {/* react icon passed as children to Card component */}
                     </Card>
 
                     <Card

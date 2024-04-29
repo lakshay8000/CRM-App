@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { axiosInstance } from "../../config/axiosInstance";
 
+
 function Signup() {
     const navigate= useNavigate();
 
@@ -71,7 +72,7 @@ function Signup() {
                     />
 
                     <input
-                        type="text"
+                        type="email"
                         placeholder="Email"
                         onChange={(e) => setSignupDetails({ ...signupDetails, email: e.target.value })}
                         value={signupDetails.email}
