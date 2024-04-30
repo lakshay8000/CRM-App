@@ -15,7 +15,7 @@ function useTickets() {
 
     // for getting and setting tickets in tickets state-
     async function loadTickets() {
-        if (authState.userData.userType == "customer") {
+        if (authState?.userData?.userType == "customer") {
             await dispatch(getTicketsForCustomer());     // this will load tickets created by the customer
         }
         else if (authState.userData.userType == "engineer") {

@@ -4,7 +4,7 @@ import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Homepage from "../pages/Homepage/Homepage";
-import CreateTicket from "../pages/tickets/Createticket";
+import CreateTicket from "../pages/tickets/CreateTicket";
 import ListAllUsers from "../pages/users/ListAllUsers";
 import AuthRoutes from "./AuthRoutes";
 
