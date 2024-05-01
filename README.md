@@ -29,29 +29,84 @@ Welcome to our CRM (Customer Relationship Management) application! This project 
 - **React ChartJS 2**: Wrapper for Chart.js to create interactive charts in React applications.
 - **Vite**: Fast build tool for JavaScript and TypeScript projects, perfect for React applications.
 - **ESLint with eslint-plugin-simple-import-sort**: JavaScript linter for maintaining code quality and consistency.
+ 
+
+## Backend Installation
+
+I have used a third-party backend for this app.
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/lakshay8000/CRMAppBackend.git
+   ```
+
+2. **Navigate to the Backend Directory:**
+   ```bash
+   cd your_backend_repo
+   ```
+
+3. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+
+4. **Database Setup:**
+   - Create a MongoDB database on your preferred platform.
+   - Ensure you have access credentials and the database URI handy.
+
+5. **Environment Variable Configuration:**
+   - Create a `.env` file in the root directory of the backend.
+   - Define the following environment variables in the `.env` file:
+     ```.env
+     JWT_SECRET_KEY=your_secret_key_here
+     MONGODB_URI=your_mongodb_uri_here
+     ```
+     Replace `your_secret_key_here` with a secure string for JWT token encryption and `your_mongodb_uri_here` with the URI of your MongoDB database.
+
+6. **Start the Server:**
+   ```bash
+   npm start
+   ```
+
+Note- On the deployed app, the backend is hosted on a free instance backend deployment, which may respond slowly and experience delays due to inactivity. Requests might be delayed by up to 50 seconds if the backend instance needs to spin up. Please keep this in mind when testing or using the deployed application.
 
 
-## Backend
+## Frontend Installation:
 
-I have used a third-party backend for this app. 
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/lakshay8000/CRM-App.git
+   ```
 
-1. Clone the backend repository to your local machine using git clone https://github.com/lakshay8000/CRMAppBackend.git .
-2. Navigate to the Repository
-3. Install dependencies using `npm install`.
-4. Start the server by using the command- npm start.
+2. **Navigate to the Frontend Directory:**
+   ```bash
+   cd your_frontend_repo
+   ```
 
+3. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Installation:
+4. **Environment Variable Configuration:**
+   - Create a `.env` file in the root directory of the frontend.
+   - Set up the Base URL and API timeout for backend requests in the `.env` file:
+     ```.env
+     VITE_BASE_URL=your_backend_base_url_here
+     VITE_API_TIMEOUT=your_api_timeout_here
+     ```
+     Replace `your_backend_base_url_here` with the base URL of your backend API and `your_api_timeout_here` with the desired API timeout value.
 
-1. Clone the repository to your local machine.
-2. Install dependencies using `npm install`.
-3. Create .env file and set up the Base URL and API timeout for backend requests in it.
-4. Start the development server locally using `npm run dev` (built with Vite).
+5. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
+
+By following these steps, you should be able to set up the frontend of the CRM app successfully. If you encounter any issues during installation or configuration, feel free to reach out for assistance.
 
 
 ## Contributing:
 
 Contributions are welcome! Feel free to open an issue or submit a pull request for any improvements or features you'd like to add.
-
 
 This project is created as a personal project for inclusion in my portfolio. Its purpose is to showcase my skills in building React applications with Redux toolkit. If you have any questions or feedback, feel free to reach out.
