@@ -11,7 +11,7 @@ import HomeLayout from "../../layouts/HomeLayout";
 
 // tickets dashboard-
 function Dashboard() {
-    const [ticketsState] = useTickets();    
+    const [ticketsState, isLoading] = useTickets();
 
     // details to be shown on click of rows-
     const [selectedTicket, setSelectedTicket] = useState({});
@@ -31,7 +31,7 @@ function Dashboard() {
     // for react data table component package-
     const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
-
+    
     return (
 
         <HomeLayout>
@@ -58,36 +58,46 @@ function Dashboard() {
 
                 <div className="table-wrapper pt-4 max-w-full">
                     {
-                        ticketsState.ticketList
-                        &&
-                        <div ref={targetRef} className='max-w-full' >
-                            <DataTable
-                                columns={columns}
-                                data={ticketsState.ticketList}
-                                customStyles={customStyles}
-                                expandableRows
-                                expandableRowsComponent={ExpandedComponent}
-                                onRowClicked={(row) => {
-                                    // console.log(row);
-                                    setSelectedTicket({
-                                        ...row
-                                    });
-                                    document.getElementById('ticket-details-modal').showModal();
-                                }}
-                                onRowMouseEnter={(row, event) => {
-                                    event.target.style.cursor = "pointer";
-                                }}
-                                onRowMouseLeave={(row, event) => {
-                                    event.target.style.cursor = "auto";
-                                }}
-                            />
-                        </div>
+                        (isLoading) ?
+                            <div className="w-full flex justify-center mt-20">
+                                <span className="loading loading-ring loading-xs"></span>
+                                <span className="loading loading-ring loading-sm"></span>
+                                <span className="loading loading-ring loading-md"></span>
+                                <span className="loading loading-ring loading-lg"></span>
+                            </div>
+                            :
+                            (
+                                ticketsState.ticketList
+                                &&
+                                <div ref={targetRef} className='max-w-full' >
+                                    <DataTable
+                                        columns={columns}
+                                        data={ticketsState.ticketList}
+                                        customStyles={customStyles}
+                                        expandableRows
+                                        expandableRowsComponent={ExpandedComponent}
+                                        onRowClicked={(row) => {
+                                            // console.log(row);
+                                            setSelectedTicket({
+                                                ...row
+                                            });
+                                            document.getElementById('ticket-details-modal').showModal();
+                                        }}
+                                        onRowMouseEnter={(row, event) => {
+                                            event.target.style.cursor = "pointer";
+                                        }}
+                                        onRowMouseLeave={(row, event) => {
+                                            event.target.style.cursor = "auto";
+                                        }}
+                                    />
+                                </div>
+                            )
                     }
                 </div>
 
-                <TicketDetailsModal 
-                    selectedTicket= {selectedTicket} 
-                    setSelectedTicket= {setSelectedTicket}
+                <TicketDetailsModal
+                    selectedTicket={selectedTicket}
+                    setSelectedTicket={setSelectedTicket}
                 />
 
             </div>

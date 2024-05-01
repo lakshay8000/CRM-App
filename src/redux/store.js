@@ -6,7 +6,7 @@ import ticketsSlice from "./slices/ticketsSlice";
 const store= configureStore({
     reducer : {
         auth : authSlice.reducer,
-        tickets : ticketsSlice.reducer
+        tickets : ticketsSlice.reducer,
     },
     devTools : true
 });

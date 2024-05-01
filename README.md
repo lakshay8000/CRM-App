@@ -11,6 +11,7 @@ Welcome to our CRM (Customer Relationship Management) application! This project 
 - **Engineer Homepage**: Engineers have access to tickets assigned to them, with the ability to update ticket description, priority, and status.
 - **Admin Homepage**: Admins can manage all tickets and user accounts, including approving new engineer accounts and updating user status.
 - **Responsive Design**: The application is designed to be responsive, ensuring a seamless experience across devices.
+--**Seamless Data Fetching Experience**: Implementing loaders that ensures a seamless user experience by preventing UI blocking during data fetching.
 - **Future Enhancements**: Plans to implement search functionality in the dashboard and continuous improvements to enhance user experience.
 
 

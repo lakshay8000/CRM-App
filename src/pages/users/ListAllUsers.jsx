@@ -6,6 +6,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import useUsersDataTable from "../../hooks/useUsersDataTable";
 import HomeLayout from "../../layouts/HomeLayout";
 
+
 function ListAllUsers() {
     const [userList, setUserList] = useState([]);              // for showing list of all users in the table
     const [userDisplay, setUserDisplay] = useState({           // details to be shown on click of rows
@@ -14,15 +15,18 @@ function ListAllUsers() {
         userType: '',
         userStatus: '',
         clientName: '',
-        _id : ""
+        _id: ""
     });
 
+    const [isLoading, setIsLoading] = useState(false);
     async function loadUsers() {
+        setIsLoading(true);
         const response = await axiosInstance.get("users", {
             headers: {
                 "x-access-token": localStorage.getItem("token")
             }
         });
+        setIsLoading(false);
         setUserList([...response?.data?.result]);    // In case of error, Spreading undefined or null will result in an empty array in the context of creating a new array with the spread operator. This will happen because we are using optional chaining here
     }
 
@@ -43,42 +47,52 @@ function ListAllUsers() {
                 </h1>
 
                 {
-                    userList.length > 0
-                    &&
-                    <DataTable
-                        columns={columns}
-                        data={userList}
-                        customStyles={customStyles}
-                        onRowClicked={(row) => {
-                            // we will do functional update of state to update the state instantly-
-                            setUserDisplay(() => {
-                                return (
-                                    {
-                                        name: row.name,
-                                        email: row.email,
-                                        userType: row.userType,
-                                        userStatus: row.userStatus,
-                                        clientName: row.clientName,
-                                        _id : row._id
-                                    }
-                                );
-                            });
-                            // for showing daisyui modal-
-                            document.getElementById('user-details-modal').showModal();
-                        }}
-                        onRowMouseEnter={(row, event) => {
-                            event.target.style.cursor = "pointer";
-                        }}
-                        onRowMouseLeave={(row, event) => {
-                            event.target.style.cursor = "auto";
-                        }}
-                    />
+                    (isLoading) ?
+                        <div className="w-full flex justify-center mt-20">
+                            <span className="loading loading-ring loading-xs"></span>
+                            <span className="loading loading-ring loading-sm"></span>
+                            <span className="loading loading-ring loading-md"></span>
+                            <span className="loading loading-ring loading-lg"></span>
+                        </div>
+                        :
+                        (
+                            userList.length > 0
+                            &&
+                            <DataTable
+                                columns={columns}
+                                data={userList}
+                                customStyles={customStyles}
+                                onRowClicked={(row) => {
+                                    // we will do functional update of state to update the state instantly-
+                                    setUserDisplay(() => {
+                                        return (
+                                            {
+                                                name: row.name,
+                                                email: row.email,
+                                                userType: row.userType,
+                                                userStatus: row.userStatus,
+                                                clientName: row.clientName,
+                                                _id: row._id
+                                            }
+                                        );
+                                    });
+                                    // for showing daisyui modal-
+                                    document.getElementById('user-details-modal').showModal();
+                                }}
+                                onRowMouseEnter={(row, event) => {
+                                    event.target.style.cursor = "pointer";
+                                }}
+                                onRowMouseLeave={(row, event) => {
+                                    event.target.style.cursor = "auto";
+                                }}
+                            />
+                        )
                 }
 
-                <UserDetailsModal 
-                    userDisplay= {userDisplay} 
-                    setUserDisplay= {setUserDisplay}
-                    resetTable= {loadUsers}
+                <UserDetailsModal
+                    userDisplay={userDisplay}
+                    setUserDisplay={setUserDisplay}
+                    resetTable={loadUsers}
                 />
 
             </div>
