@@ -5,7 +5,7 @@ function Card({children, ticketCategory, fontColor="text-primary-content", borde
     
     return (
         <div 
-            className= {`w-52 h-48 rounded-xl py-4 flex flex-col ${bgColor} ${fontColor} border-b-4 ${borderColor} transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:cursor-pointer duration-300 `}
+            className= {`flex flex-col w-52 h-48 rounded-xl py-4 ${bgColor} ${fontColor} border-b-4 ${borderColor} transition ease-in-out delay-150 hover:translate-y-1 hover:scale-110 hover:cursor-pointer duration-300 `}
             onClick={() => navigate(`/dashboard?category=${ticketCategory}`)}
         >
             <div className="flex justify-center gap-1">

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
@@ -5,30 +6,42 @@ import { filterTickets, updateTicket } from "../redux/slices/ticketsSlice";
 
 
 function TicketDetailsModal({ selectedTicket, setSelectedTicket }) {
-    const userState = useSelector(state => state.auth);
+    const authState = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
 
     // this fn will just change the details in selectedTicket state
     function handleTicketUpdate(e) {
-        const dropdownName = e.target.name;
-        setSelectedTicket({
-            ...selectedTicket,
-            [dropdownName]: e.target.value
-        });
+        if (authState.userData.userStatus == "approved") {
+            const dropdownName = e.target.name;
+            setSelectedTicket({
+                ...selectedTicket,
+                [dropdownName]: e.target.value
+            });
+        }
+        else {
+            document.getElementById("ticket-details-modal").close();
+            toast.error("User is not approved");
+        }
     }
 
     async function handleFormSubmit() {
-        await dispatch(updateTicket(selectedTicket));
+        if (authState.userData.userStatus == "approved") {
+            await dispatch(updateTicket(selectedTicket));
 
-        // If the category/status of the ticket has changed during updation, we will filter it so that it doesn't show on the current page
-        if (searchParams.get("category")) {
-            // dispatch a filter action-
-            dispatch(filterTickets(searchParams.get("category")));
+            // If the category/status of the ticket has changed during updation, we will filter it so that it doesn't show on the current page
+            if (searchParams.get("category")) {
+                // dispatch a filter action-
+                dispatch(filterTickets(searchParams.get("category")));
+            }
+
+            // after updating the ticket, we will close the popped up modal now-
+            document.getElementById("ticket-details-modal").close();
         }
-
-        // after updating the ticket, we will close the popped up modal now-
-        document.getElementById("ticket-details-modal").close();
+        else {
+            document.getElementById("ticket-details-modal").close();
+            toast.error("User is not approved");
+        }
     }
 
     return (
@@ -51,43 +64,43 @@ function TicketDetailsModal({ selectedTicket, setSelectedTicket }) {
                 </textarea>
 
                 {
-                    (userState.userData.userType != "customer") &&
+                    (authState.userData.userType != "customer") &&
                     (
                         <>
-                        {/* Used select and option tags manually to create dropdown */}
-                        <h3>
-                            <label htmlFor="ticket-priority">Priority :</label>
-                            <select
-                                name="ticketPriority"
-                                id="ticket-priority"
-                                onChange={handleTicketUpdate}
-                                value={selectedTicket.ticketPriority}
-                                className="ml-2 rounded-md px-2 py-1 mt-4"
-                            >
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </h3>
+                            {/* Used select and option tags manually to create dropdown */}
+                            <h3>
+                                <label htmlFor="ticket-priority">Priority :</label>
+                                <select
+                                    name="ticketPriority"
+                                    id="ticket-priority"
+                                    onChange={handleTicketUpdate}
+                                    value={selectedTicket.ticketPriority}
+                                    className="ml-2 rounded-md px-2 py-1 mt-4"
+                                >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </h3>
 
-                        {/* Used select and option tags manually to create dropdown */}
-                        <h3>
-                            <label htmlFor="ticket-status">Status :</label>
-                            <select
-                                name="status"
-                                id="ticket-status"
-                                onChange={handleTicketUpdate}
-                                value={selectedTicket.status}
-                                className="ml-2 rounded-md px-2 py-1 mt-4"
-                            >
-                                <option value="open">open</option>
-                                <option value="inProgress">inProgress</option>
-                                <option value="resolved">resolved</option>
-                                <option value="onHold">onHold</option>
-                                <option value="cancelled">cancelled</option>
-                            </select>
-                        </h3>
+                            {/* Used select and option tags manually to create dropdown */}
+                            <h3>
+                                <label htmlFor="ticket-status">Status :</label>
+                                <select
+                                    name="status"
+                                    id="ticket-status"
+                                    onChange={handleTicketUpdate}
+                                    value={selectedTicket.status}
+                                    className="ml-2 rounded-md px-2 py-1 mt-4"
+                                >
+                                    <option value="open">open</option>
+                                    <option value="inProgress">inProgress</option>
+                                    <option value="resolved">resolved</option>
+                                    <option value="onHold">onHold</option>
+                                    <option value="cancelled">cancelled</option>
+                                </select>
+                            </h3>
                         </>
                     )
                 }

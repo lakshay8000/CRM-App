@@ -9,6 +9,7 @@ Welcome to our CRM (Customer Relationship Management) application! This project 
 - **Ticket Management**: Customers can view all tickets, create new ones, and update ticket descriptions.
 - **Download Tickets**: Users have the option to download tickets in PDF format directly from the dashboard page.
 - **Engineer Homepage**: Engineers have access to tickets assigned to them, with the ability to update ticket description, priority, and status.
+- **Default Assignment**: All tickets created are currently assigned to "testEngineer1".
 - **Admin Homepage**: Admins can manage all tickets and user accounts, including approving new engineer accounts and updating user status.
 - **Responsive Design**: The application is designed to be responsive, ensuring a seamless experience across devices.
 --**Seamless Data Fetching Experience**: Implementing loaders that ensures a seamless user experience by preventing UI blocking during data fetching.

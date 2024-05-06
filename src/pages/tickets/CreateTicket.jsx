@@ -32,14 +32,28 @@ function CreateTicket() {
     async function onFormSubmit(e) {
         e.preventDefault();     // default behaviour on submission of form is that the page refreshes
 
-        if (ticket.title == "" || ticket.description == "") {
-            toast.error("Title and description are mandatory");
-            return;
+        if (authState.userData.userStatus == "approved") {
+            if (ticket.title == "" || ticket.description == "") {
+                toast.error("Title and description are mandatory");
+                return;
+            }
+            else {
+                await dispatch(createTicket(ticket));
+    
+                // reset ticket to initial state-
+                setTicket({
+                    title : "",
+                    description : "",
+                    status : "open",
+                    ticketPriority : 4,
+                    clientName : authState.userData.clientName,
+                    assignedTo : "testengineer1@admin.com"
+                    // assignee and createdBy will be handled by backend. I have fixed assignedTo to testEngineer1 because of backend bug issue. Created only 1 engineer- testEngineer1, so randomly also all the tickets will be assigned to testEngineer1 only
+                });
+            }
         }
         else {
-            await dispatch(createTicket(ticket));
-
-            // reset ticket to initial state-
+            toast.error("User is not approved");
             setTicket({
                 title : "",
                 description : "",

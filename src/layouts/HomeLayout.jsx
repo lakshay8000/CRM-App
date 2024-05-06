@@ -23,7 +23,7 @@ function HomeLayout({ children }) {
     return (
         <div className="min-h-[90vh] flex flex-row mt-4">
 
-            <div className="drawer w-max ">
+            <div className="drawer basis-1/12 ">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
 
                 <div className="drawer-content">
@@ -64,8 +64,7 @@ function HomeLayout({ children }) {
 
             </div>
 
-
-            <div className="main-body flex flex-row grow justify-center items-start px-4 ml-4">
+            <div className="main-body basis-11/12 flex flex-row grow justify-center items-start px-4">
                 {children}
             </div>
 

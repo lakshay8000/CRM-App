@@ -29,7 +29,7 @@ function Homepage() {
             {
                 (isLoading) ?
                     (
-                        <div className="w-full flex justify-center mt-20">
+                        <div className="w-4/5 flex justify-center mt-20">
                             <span className="loading loading-ring loading-xs"></span>
                             <span className="loading loading-ring loading-sm"></span>
                             <span className="loading loading-ring loading-md"></span>
@@ -38,8 +38,8 @@ function Homepage() {
                     )
                     :
                     (
-                        <div className='flex flex-col gap-12 w-4/5'>
-                            <div className="card-wrapper flex flex-wrap gap-8 ">
+                        <div className='flex flex-col gap-12 w-full'>
+                            <div className="card-wrapper w-full flex justify-center flex-wrap gap-8 ">
 
                                 <Card
                                     titleText="Open"
@@ -113,21 +113,21 @@ function Homepage() {
 
                             </div>
 
-                            <div className='w-full flex justify-center my-16'>
-                                <div className="pie-chart w-[28rem] h-[28rem]">
+                            <div className="w-full flex flex-col items-center my-16">
+                                <div className="pie-chart lg:w-[30rem] md:w-[20rem] mb-16">
                                     <Pie data={pieChartData} />
                                 </div>
-                            </div>
 
-                            <div className='w-full flex flex-col justify-center items-center gap-8 mb-16'>
-                                <div className="text-2xl">Tickets data of past 15 days-</div>
-                                <div className='line-chart w-[60rem]'>
-                                    <Line options={lineChartOptions} data={lineChartData} />
+                                <div className='w-full flex flex-col justify-center items-center gap-8 mb-16'>
+                                    <div className="text-2xl text-center">Tickets data of past 15 days-</div>
+                                    <div className='line-chart w-full'>
+                                        <Line options={lineChartOptions} data={lineChartData} />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="bar-chart mb-16">
-                                <Bar data={barChartData} options={barChartOptions} />
+                                <div className="bar-chart w-full mb-16">
+                                    <Bar data={barChartData} options={barChartOptions} />
+                                </div>
                             </div>
 
                         </div>

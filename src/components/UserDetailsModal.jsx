@@ -1,9 +1,13 @@
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 import { axiosInstance } from "../config/axiosInstance";
 
 
 function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
+    
+    const authState= useSelector(state => state.auth);
+    const modal= document.getElementById("user-details-modal");
 
     async function handleUserChange(e) {
         const dropdownName= e.target.parentNode.parentNode.getAttribute("name");
@@ -13,35 +17,42 @@ function UserDetailsModal({ userDisplay, setUserDisplay, resetTable }) {
         dropdownElement.removeAttribute("open");
 
         // update user on backend-
-        const response = axiosInstance.patch("user/updateUser", {
-            userId: userDisplay._id,
-            updates: {
+        if (authState.userData.userStatus == "approved") {
+            const response = axiosInstance.patch("user/updateUser", {
+                userId: userDisplay._id,
+                updates: {
+                    ...userDisplay,
+                    [dropdownName]: e.target.textContent
+                }
+            },
+                {
+                    headers: {
+                        "x-access-token": localStorage.getItem("token")
+                    }
+                }
+            );
+    
+            toast.promise(response, {
+                loading: 'Updating User',
+                success: 'Successfully updated the user',
+                error: 'Something went wrong',
+            });
+            await response;    // awaiting like this because of toast.promise
+    
+            // update status in userDisplay state so that it re renders the current state and show that on the dropdown
+            setUserDisplay({
                 ...userDisplay,
                 [dropdownName]: e.target.textContent
-            }
-        },
-            {
-                headers: {
-                    "x-access-token": localStorage.getItem("token")
-                }
-            }
-        );
+            });
+    
+            // to update the table-
+            resetTable();
+        }
 
-        toast.promise(response, {
-            loading: 'Updating User',
-            success: 'Successfully updated the user',
-            error: 'Something went wrong',
-        });
-        await response;    // awaiting like this because of toast.promise
-
-        // update status in userDisplay state so that it re renders the current state and show that on the dropdown
-        setUserDisplay({
-            ...userDisplay,
-            [dropdownName]: e.target.textContent
-        });
-
-        // to update the table-
-        resetTable();
+        else {
+            modal.close();
+            toast.error("Admin is not approved");
+        }
     }
 
     return (
