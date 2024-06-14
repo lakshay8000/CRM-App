@@ -111,3 +111,7 @@ By following these steps, you should be able to set up the frontend of the CRM a
 Contributions are welcome! Feel free to open an issue or submit a pull request for any improvements or features you'd like to add.
 
 This project is created as a personal project for inclusion in my portfolio. Its purpose is to showcase my skills in building React applications with Redux toolkit. If you have any questions or feedback, feel free to reach out.
+
+
+## LICENSE:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
